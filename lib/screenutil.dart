@@ -25,6 +25,7 @@ class ScreenUtil {
   static double _statusBarHeight;
   static double _bottomBarHeight;
   static double _textScaleFactor;
+  static bool _widthScaleOnly;
 
   ScreenUtil._();
 
@@ -35,10 +36,12 @@ class ScreenUtil {
   static void init(BuildContext context,
       {num width = defaultWidth,
       num height = defaultHeight,
+      bool widthScaleOnly = false,
       bool allowFontScaling = false}) {
     if (_instance == null) {
       _instance = ScreenUtil._();
     }
+    _widthScaleOnly = widthScaleOnly;
     _instance.uiWidthPx = width;
     _instance.uiHeightPx = height;
     _instance.allowFontScaling = allowFontScaling;
@@ -107,19 +110,20 @@ class ScreenUtil {
   /// It is recommended to use this method to achieve a high degree of adaptation
   /// when it is found that one screen in the UI design
   /// does not match the current style effect, or if there is a difference in shape.
-  num setHeight(num height) => height * scaleHeight;
+  num setHeight(num height) {
+    if (_widthScaleOnly) {
+      return height * scaleHeight;
+    } else {
+      return height * scaleHeight;
+    }
+  }
 
   ///字体大小适配方法
   ///@param [fontSize] UI设计上字体的大小,单位px.
   ///Font size adaptation method
   ///@param [fontSize] The size of the font on the UI design, in px.
   ///@param [allowFontScaling]
-  num setSp(num fontSize, {bool allowFontScalingSelf}) =>
-      allowFontScalingSelf == null
-          ? (allowFontScaling
-              ? (fontSize * scaleText)
-              : ((fontSize * scaleText) / _textScaleFactor))
-          : (allowFontScalingSelf
-              ? (fontSize * scaleText)
-              : ((fontSize * scaleText) / _textScaleFactor));
+  num setSp(num fontSize, {bool allowFontScalingSelf}) => allowFontScalingSelf == null
+      ? (allowFontScaling ? (fontSize * scaleText) : ((fontSize * scaleText) / _textScaleFactor))
+      : (allowFontScalingSelf ? (fontSize * scaleText) : ((fontSize * scaleText) / _textScaleFactor));
 }
