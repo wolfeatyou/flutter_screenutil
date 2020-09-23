@@ -112,7 +112,7 @@ class ScreenUtil {
   /// does not match the current style effect, or if there is a difference in shape.
   num setHeight(num height) {
     if (_widthScaleOnly) {
-      return height * scaleHeight;
+      return height * scaleWidth;
     } else {
       return height * scaleHeight;
     }
